@@ -2,21 +2,21 @@ import React from 'react';
 import { Button, View, TextInput, StyleSheet, Image, Text, TouchableOpacity } from 'react-native';
 import {AuthContext} from '../utils/authContext';
 import * as Animatable from 'react-native-animatable';
-import signUp1 from './flows/signUpFlow/signUp1';
+
 
 
 export default ({ navigation }) => {
     const [username, setUsername] = React.useState('');
     const [password, setPassword] = React.useState('');
   
-    const { signIn } = React.useContext(AuthContext);
+    
 
     const handleSignupPress = () => {
         navigation.navigate('Sign up');
     }
 
     const handleLoginPress = () => {
-        signIn({username: "Hey", password: ""});
+        navigation.navigate('Sign in1');
     }
 
     const moveUp = {

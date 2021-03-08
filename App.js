@@ -21,15 +21,32 @@ export default function App() {
                 // In a production app, we need to send some data (usually username, password) to server and get a token
                 // We will also need to handle errors if sign in failed
                 // After getting token, we need to persist the token using `AsyncStorage`
-
-                if (data.username == "Hey") {
-                    dispatch({
-                        type: 'SIGN_IN',
-                        token: 'dummy-auth-token'
+                fetch('https://myso1ve.dk/bonjour/signin.php', { // Send data to server for log in
+                    method: 'post',
+                    header:{
+                        'Accept': 'application/json',
+                        'Content-type': 'application/json'
+                    },
+                    body:JSON.stringify({
+                        "username": data.username,
+                        "password": data.password
+                    })
+                })
+                .then((response) => response.json())
+                    .then((responseJson) =>{
+                        if(responseJson == "SIS"){ // SIS: Sign in success
+                            dispatch({
+                                type: 'SIGN_IN',
+                                token: 'dummy-auth-token'
+                            });
+                        }else{
+                            alert(responseJson); // Alert error message
+                        }
+                    })
+                    .catch((error)=>{
+                        console.error(error);
                     });
-                } else {
-                    alert("wrong user");
-                }
+                
             },
             signOut: () => dispatch({
                 type: 'SIGN_OUT'
@@ -39,10 +56,33 @@ export default function App() {
                 // We will also need to handle errors if sign up failed
                 // After getting token, we need to persist the token using `AsyncStorage`
 
-                dispatch({
-                    type: 'SIGN_IN',
-                    token: 'dummy-auth-token'
-                });
+                fetch('https://myso1ve.dk/bonjour/register.php', { // Sends data to server for sign up
+                    method: 'post',
+                    header:{
+                        'Accept': 'application/json',
+                        'Content-type': 'application/json'
+                    },
+                    body:JSON.stringify({
+                        "name" : data.name,
+                        "email": data.email,
+                        "password": data.password,
+                        "gender": data.gender
+                    })
+                })
+                .then((response) => response.json())
+                    .then((responseJson) =>{
+                        if(responseJson == "URS"){ // URS: User Registered Successfully
+                            dispatch({
+                                type: 'SIGN_IN',
+                                token: 'dummy-auth-token'
+                            });
+                        }else{
+                            alert(responseJson); // Alert error message
+                        }
+                    })
+                    .catch((error)=>{
+                        console.error(error);
+                    });
             },
         }),
         []

@@ -7,11 +7,43 @@ export default ({ navigation, route }) => {
     const [email, setEmail] = React.useState('');
     const [buttonState, setButtonState] = React.useState(true);
     
+    const nextPage = () => {
+      navigation.navigate('Password', {
+        name: route.params.name,
+        email: email
+      });
+    }
+    const checkEmail = async () => {
+      // In a production app, we need to send some data (usually username, password) to server and get a token
+      // We will also need to handle errors if sign in failed
+      // After getting token, we need to persist the token using `AsyncStorage`
+      fetch('https://myso1ve.dk/bonjour/register.php', { // Sends data to server to check if email is used
+          method: 'post',
+          header:{
+              'Accept': 'application/json',
+              'Content-type': 'application/json'
+          },
+          body:JSON.stringify({
+              "checkEmail": "true", // send chechEmail: true, to tell register.php to check for email and not to create new user
+              "email": email
+          })
+      })
+      .then((response) => response.json())
+          .then((responseJson) =>{
+              if(responseJson == "MNU"){ // MNU: Mail not used
+                nextPage();
+              }else{
+                  alert(responseJson);
+              }
+          })
+          .catch((error)=>{
+              console.error(error);
+          });
+      
+  }
+
     const handlePress = () => {
-        navigation.navigate('Password', {
-            name: route.params.name,
-            email: email
-        });
+        checkEmail();
     }
 
     const fadeIn = {
@@ -30,7 +62,7 @@ export default ({ navigation, route }) => {
         <View style={styles.contentsContainer}>
             <View style={styles.heroContainer}>
                 <Animatable.Text style={styles.hero} animation={fadeIn} iterationDelay={250}>
-                  WHAT'S YOUR{"\n"}EMAIL...?{route.params.name}
+                  WHAT'S YOUR{"\n"}EMAIL...?
                 </Animatable.Text>
             </View>
             <View style={styles.inputContainer}>
@@ -39,7 +71,7 @@ export default ({ navigation, route }) => {
                   onChangeText={(value) => {
                     if (value === "") {
                         setEmail(value);
-                        stButtonState(true);
+                        setButtonState(true);
                       } else {
                         setEmail(value)
                         setButtonState(false);

@@ -3,6 +3,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import Feed from '../screens/Feed';
 import SignIn from '../screens/SignIn';
+import SignIn1 from '../screens/SignIn1';
 import SignUp from '../screens/SignUp';
 
 // Sign up flow
@@ -31,6 +32,7 @@ const AuthStack = createStackNavigator();
 export const AuthStackScreen = () => (
   <AuthStack.Navigator>
     <AuthStack.Screen name="Sign in" component={SignIn} options={{headerShown: false}}/>
+    <AuthStack.Screen name="Sign in1" component={SignIn1} options={{headerShown: false}}/>
     <AuthStack.Screen 
       options={{
         headerShown: false,

@@ -11,7 +11,7 @@ export default ({ navigation, route }) => {
         Keyboard.dismiss();
         navigation.navigate('Gender', {
             name: route.params.name,
-            email: route.params.name,
+            email: route.params.email,
             password: password,
         });
     }
@@ -32,7 +32,7 @@ export default ({ navigation, route }) => {
         <View style={styles.contentsContainer}>
             <View style={styles.heroContainer}>
                 <Animatable.Text style={styles.hero} animation={fadeIn} iterationDelay={250}>
-                  CHOOSE YOUR{"\n"}PASSWORD.{route.params.email}
+                  CHOOSE YOUR{"\n"}PASSWORD.
                 </Animatable.Text>
             </View>
             <View style={styles.inputContainer}>

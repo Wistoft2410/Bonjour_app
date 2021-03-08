@@ -1,31 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, TextInput, Text, StatusBar, KeyboardAvoidingView, TouchableOpacity, Keyboard } from 'react-native';
 import * as Animatable from 'react-native-animatable';
-import {AuthContext} from '../../../utils/authContext';
+import {AuthContext} from '../utils/authContext';
 // import GoconInput from '../../../components/GoconInput';
 
 export default ({ navigation, route }) => {
-    const [gender, setGender] = React.useState('');
+    const [email, setEmail] = React.useState('');
+    const [password, setPassword] = React.useState('');
     const [buttonState, setButtonState] = React.useState(true);
-    
-    const { signUp } = React.useContext(AuthContext);
+    const [inputState, setInputState] = React.useState(false);
+
+    const { signIn } = React.useContext(AuthContext);
 
     const handlePress = () => {
-        Keyboard.dismiss();
-        alert(gender);
-    }
-
-    const handleGenderPress = (genderType) => {
-        setGender(genderType);
-        signUp({name: route.params.name, email: route.params.email, password: route.params.password, gender: genderType})
-   
-        // Need to fix YourThing
-        // navigation.navigate('YourThing', {
-        //     name: route.params.name,
-        //     email: route.params.email,
-        //     password: route.params.password,
-        //     gender: genderType,
-        // });
+        signIn({username: email, password: password})
     }
 
     const fadeIn = {
@@ -37,37 +25,54 @@ export default ({ navigation, route }) => {
       },
     };
 
-    const genderStyle = (genderType) => {
-        
-    }
-
     const buttonStateStyle = buttonState ? styles.lowOpacity : "";
-
+    const inputStateStyle = !inputState ? styles.lowOpacity : "";
     return(
       <View style={styles.container}>
         <View style={styles.contentsContainer}>
             <View style={styles.heroContainer}>
                 <Animatable.Text style={styles.hero} animation={fadeIn} iterationDelay={250}>
-                  WHAT'S YOUR{"\n"}GENDER...?
+                  LOG IN
                 </Animatable.Text>
             </View>
             <View style={styles.inputContainer}>
-                <TouchableOpacity 
-                    style={[styles.maleGender, genderStyle('male')]}
-                    onPress={() => handleGenderPress('male')}
-                >
-                    <Text style={styles.genderText}>
-                        MALE
-                    </Text>
-                </TouchableOpacity> 
-                <TouchableOpacity 
-                    style={[styles.femaleGender, genderStyle('female')]}
-                    onPress={() => handleGenderPress('female')}
-                >
-                    <Text style={styles.genderText}>
-                        FEMALE
-                    </Text>
-                </TouchableOpacity> 
+              <TextInput
+                  style={styles.nameInput}
+                  onChangeText={(value) => {
+                    if (value === "") {
+                        setEmail(value);
+                        setButtonState(true);
+                        setInputState(false);
+                      } else {
+                        setEmail(value);
+                        setInputState(true);
+                      }
+                    }
+                  }
+                  value={email}
+                  autoFocus={true}
+                  placeholder="john@does.com"
+              />            
+            </View>
+            <View style={styles.inputContainer}>
+              <TextInput
+                  style={[styles.nameInput,inputStateStyle]}
+                  onChangeText={(value) => {
+                    if (value === "") {
+                        setPassword(value);
+                        setButtonState(true);
+                      } else {
+                        setPassword(value)
+                        setButtonState(false);
+                      }
+                    }
+                  }
+                  value={password}
+                  autoFocus={true}
+                  placeholder="Password"
+                  editable={inputState}
+                  secureTextEntry={true}
+              />            
             </View>
         </View>
         <KeyboardAvoidingView 
@@ -75,11 +80,12 @@ export default ({ navigation, route }) => {
           behavior={ Platform.OS === 'ios'? 'padding': null}
         >
             <TouchableOpacity 
-                style={[styles.action]}
+                disabled={buttonState}
+                style={[styles.action, buttonStateStyle]}
                 onPress={() => handlePress()}
             >
                 <Text style={styles.actionText}>
-                    THERE'S MORE
+                    Log in
                 </Text>
             </TouchableOpacity> 
         </KeyboardAvoidingView>
@@ -121,45 +127,26 @@ const styles = StyleSheet.create({
       fontWeight: "700",
   },
   actionContainer: {
-      alignItems: 'center',
-      marginBottom: '13%',
-      flex: 1,
-      justifyContent: 'flex-end',
-      paddingBottom: 50,
-  },
-  action: {
-      backgroundColor: 'rgba(255, 255, 255, 0.2)',
-      paddingHorizontal: 25,
-      paddingVertical: 10,
-      marginBottom: 20,
-      borderRadius: 100,
-  },
-  maleGender: {
-    backgroundColor: '#00D8FF',
-    paddingHorizontal: 45,
-    paddingVertical: 15,
-    marginBottom: 15,
+    alignItems: 'center',
+    marginBottom: '13%',
+    flex: 1,
+    justifyContent: 'flex-end',
+    paddingBottom: 50,
+},
+action: {
+    backgroundColor: '#00E864',
+    paddingHorizontal: 25,
+    paddingVertical: 10,
+    marginBottom: 13,
     borderRadius: 100,
-  },
-  femaleGender: {
-    backgroundColor: '#FF009D',
-    paddingHorizontal: 40,
-    paddingVertical: 15,
-    marginBottom: 15,
-    borderRadius: 100,
-  },
-  genderText: {
-    color: '#fff',
-    fontSize: 27,
-    fontWeight: "400",
-  },
+},
   actionText: {
-      color: '#fff',
+      color: '#000',
       fontSize: 20,
-      fontWeight: "500",
+      fontWeight: "700",
   },
   inputContainer: {
-    marginTop: '50%',
+    marginTop: '30%',
     width: '100%',
     alignItems: 'center'
   },
@@ -183,8 +170,4 @@ const styles = StyleSheet.create({
   lowOpacity: {
     opacity: 0.4,
   },
-  genderSelected: {
-    //borderWidth: 2,
-    borderColor: '#FFF'
-  }
 });
