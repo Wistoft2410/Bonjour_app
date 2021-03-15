@@ -17,8 +17,13 @@ export default ({ navigation, route }) => {
 
     const handleGenderPress = (genderType) => {
         setGender(genderType);
-        signUp({name: route.params.name, email: route.params.email, password: route.params.password, gender: genderType})
-   
+        // signUp({name: route.params.name, email: route.params.email, password: route.params.password, gender: genderType})
+        navigation.navigate('Age', {
+              name: route.params.name,
+              email: route.params.email,
+              password: route.params.password,
+              gender: genderType,
+          });
         // Need to fix YourThing
         // navigation.navigate('YourThing', {
         //     name: route.params.name,

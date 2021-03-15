@@ -1,16 +1,32 @@
 import React from 'react';
 import { StyleSheet, View, Text, StatusBar, Image } from 'react-native';
+import * as Animatable from 'react-native-animatable';
 
-export default () => (
+
+
+export default () => {
+  
+
+  const fadeIn = {
+    from: {
+        opacity: 0,
+    },
+    to: {
+        opacity: 1,
+    },
+  };
+  return(
     <View style={styles.container}>
-      <View style={styles.logoContainer}>
+      <Animatable.View style={styles.logoContainer} >
         <Image
           style={styles.logo}
           source={require('../assets/gocon-logo.png')}
         />
-      </View> 
+        <Animatable.Text animation={fadeIn} duration={500} delay={1100} style={styles.tagline}>SOCIAL. DONE RIGHT</Animatable.Text>
+      </Animatable.View>
     </View>
-);
+  );
+}
 
 const styles = StyleSheet.create({
     container: {
@@ -26,5 +42,11 @@ const styles = StyleSheet.create({
     logo: {
       width: '60%',
       resizeMode: 'contain'
+    }, 
+    tagline: {
+      marginTop: -20,
+      color: '#fff',
+      fontWeight: '700',
+      fontSize: 22
     },
   });

@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, TextInput, Text, StatusBar, KeyboardAvoidingView, TouchableOpacity, Keyboard } from 'react-native';
 import * as Animatable from 'react-native-animatable';
+import { withOrientation } from 'react-navigation';
 // import GoconInput from '../../../components/GoconInput';
 
 export default ({ navigation, route }) => {
     const [email, setEmail] = React.useState('');
     const [buttonState, setButtonState] = React.useState(true);
+    const [emailTestText, setEmailTestText] = React.useState(true); // Hide validEmailText
     
     const nextPage = () => {
       navigation.navigate('Password', {
@@ -41,7 +43,11 @@ export default ({ navigation, route }) => {
           });
       
   }
-
+  // check if email is vaild
+  function validateEmail($email) {
+    var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+    return emailReg.test( $email );
+  }
     const handlePress = () => {
         checkEmail();
     }
@@ -56,7 +62,7 @@ export default ({ navigation, route }) => {
     };
 
     const buttonStateStyle = buttonState ? styles.lowOpacity : "";
-
+    const emailTestTextStyle = emailTestText ? styles.hidden : "";
     return(
       <View style={styles.container}>
         <View style={styles.contentsContainer}>
@@ -74,20 +80,33 @@ export default ({ navigation, route }) => {
                         setButtonState(true);
                       } else {
                         setEmail(value)
-                        setButtonState(false);
+                        const emailTest = validateEmail(value);
+                        if(emailTest == true){
+                          setButtonState(false);
+                          setEmailTestText(true); // hide validEmailText
+                        }else{
+                          setButtonState(true);
+                          setEmailTestText(false); // show validEmailText
+                        }
                       }
                     }
                   }
                   value={email}
                   autoFocus={true}
                   placeholder="john@does.com"
+                  keyboardType="email-address"
+                  autoCapitalize='none'
               />            
             </View>
+            <Text style={[styles.validEmailText, emailTestTextStyle]}>
+                   Please enter valid email
+            </Text>
         </View>
         <KeyboardAvoidingView 
           style={styles.actionContainer}
           behavior={ Platform.OS === 'ios'? 'padding': null}
         >
+           
             <TouchableOpacity 
                 disabled={buttonState}
                 style={[styles.action, buttonStateStyle]}
@@ -179,4 +198,11 @@ action: {
   lowOpacity: {
     opacity: 0.4,
   },
+  validEmailText:{
+    color:'#fff',
+    marginTop: '2%'
+  },
+  hidden:{
+    display: 'none'
+  }
 });

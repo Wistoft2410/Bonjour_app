@@ -3,9 +3,10 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import {reducer, initialState} from './utils/reducer';
 import {AuthContext} from './utils/authContext';
-import { AsyncStorage } from 'react-native';
+import { AsyncStorage, StyleSheet, View, Text, StatusBar, Button} from 'react-native';
 
 import Feed from './screens/Feed';
+import Profile from './screens/Profile';
 import SignIn from './screens/SignIn';
 import SignUp from './screens/SignUp';
 import Loading from './screens/Loading';
@@ -37,7 +38,7 @@ export default function App() {
                         if(responseJson == "SIS"){ // SIS: Sign in success
                             dispatch({
                                 type: 'SIGN_IN',
-                                token: 'dummy-auth-token'
+                                token: data.username + '-dummy-auth-token'
                             });
                         }else{
                             alert(responseJson); // Alert error message
@@ -74,7 +75,7 @@ export default function App() {
                         if(responseJson == "URS"){ // URS: User Registered Successfully
                             dispatch({
                                 type: 'SIGN_IN',
-                                token: 'dummy-auth-token'
+                                token: data.email + '-dummy-auth-token'
                             });
                         }else{
                             alert(responseJson); // Alert error message
@@ -135,6 +136,9 @@ export default function App() {
             </NavigationContainer>
         </AuthContext.Provider>
     );*/
+
+                        
+
     return ( 
         <AuthContext.Provider value={authContext}>
             <NavigationContainer>

@@ -52,6 +52,8 @@ export default ({ navigation, route }) => {
                   value={email}
                   autoFocus={true}
                   placeholder="john@does.com"
+                  keyboardType="email-address"
+                  autoCapitalize='none'
               />            
             </View>
             <View style={styles.inputContainer}>

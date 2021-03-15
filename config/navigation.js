@@ -1,10 +1,12 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
+import { NavigationContainer } from '@react-navigation/native';
 
 import Feed from '../screens/Feed';
 import SignIn from '../screens/SignIn';
 import SignIn1 from '../screens/SignIn1';
 import SignUp from '../screens/SignUp';
+import Profile from "../screens/Profile";
 
 // Sign up flow
 import SignUp1 from '../screens/flows/signUpFlow/signUp1';
@@ -14,6 +16,10 @@ import SignUp4 from '../screens/flows/signUpFlow/signUp4';
 import SignUp5 from '../screens/flows/signUpFlow/signUp5';
 import SignUp6 from '../screens/flows/signUpFlow/signUp6';
 import SignUp7 from '../screens/flows/signUpFlow/signUp7';
+import SignUp8 from '../screens/flows/signUpFlow/signUp8';
+
+
+
 
 const forFade = ({ current }) => ({
   cardStyle: {
@@ -21,13 +27,20 @@ const forFade = ({ current }) => ({
   },
 });
 
+// const FeedStack = createStackNavigator();
+// export const FeedStackScreen = () => (
+//     <FeedStack.Navigator>
+//       <FeedStack.Screen name="Feed" component={Feed} options={{ headerTitle: () => <Header />, style: {height: 60} }} />
+//       <FeedStack.Screen name="Profile" component={Profile} />
+//     </FeedStack.Navigator>
+// );
 const FeedStack = createStackNavigator();
 export const FeedStackScreen = () => (
-  <FeedStack.Navigator>
-    <FeedStack.Screen name="Feed" component={Feed} />
-  </FeedStack.Navigator>
+    <FeedStack.Navigator >
+      <FeedStack.Screen name="Feed" component={Feed} options={{headerShown: false,animationEnabled: false, gestureEnabled:false}} />
+      <FeedStack.Screen name="Profile" component={Profile}  options={{headerShown: false, animationEnabled: false, gestureEnabled:false}} />
+    </FeedStack.Navigator>
 );
-
 const AuthStack = createStackNavigator();
 export const AuthStackScreen = () => (
   <AuthStack.Navigator>
@@ -52,6 +65,7 @@ export const SignUpStackScreen = () => (
     <SignUpStack.Screen options={{cardStyleInterpolator: forFade, headerShown: false}} name="Email" component={SignUp4} />
     <SignUpStack.Screen options={{cardStyleInterpolator: forFade, headerShown: false}} name="Password" component={SignUp5} />
     <SignUpStack.Screen options={{cardStyleInterpolator: forFade, headerShown: false}} name="Gender" component={SignUp6} />
+    <SignUpStack.Screen options={{cardStyleInterpolator: forFade, headerShown: false}} name="Age" component={SignUp8} />
     <SignUpStack.Screen options={{cardStyleInterpolator: forFade, headerShown: false}} name="YourThing" component={SignUp7} />
   </SignUpStack.Navigator>
 );
